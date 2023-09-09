@@ -30,6 +30,7 @@ class WebServer
                 await context.Response.WriteAsJsonAsync(dataRepository.GetData());
             }
         });
+
         app.MapPost("/item/{id}/delete", async ([Microsoft.AspNetCore.Mvc.FromRoute] String id, HttpResponse response) =>
         {
             dataRepository.DeleteById(id);
@@ -55,6 +56,7 @@ class WebServer
                 });
             }
         );
+
         app.Run();
     }
 
