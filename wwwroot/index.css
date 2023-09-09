@@ -1,7 +1,12 @@
 
 body {
     font-family: Georgia;
+    background: #f2f2f2;
     font-size: 12px;
+}
+
+.searchBarContainer {
+    text-align: center;
 }
 
 .cardBox {
@@ -63,9 +68,13 @@ body {
     flex-flow: row wrap;
     gap: 0.5rem;
 }
+
 .cardFlag.cardFlagChecked{
     background-color: #CCFFCD;
 }
+
 .cardFlag.cardFlagUnchecked{
     background-color: #FFCCCB;
 }
+
+ 

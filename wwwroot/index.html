@@ -11,19 +11,18 @@
     window.onload = async () => {
         const cardBoxRoot = document.getElementById("cardBoxRoot")        
         cardBoxRoot.appendChild(await createCardBoxAndSearch())
-                
         const searchBar = document.getElementById("searchBar")    
         const searchButton = document.getElementById("searchButton")    
         searchButton.onclick = async () => {
             const title = searchBar.value
-        	  cardBoxRoot.replaceChildren();
+        	  cardBoxRoot.replaceChildren()
             cardBoxRoot.appendChild(await createCardBoxAndSearch(title))
         }
     }
 </script>
 <body>
-    <div>
-        <textarea id="searchBar"></textarea>
+    <div class="searchBarContainer">
+        <input type="text" id="searchBar" class="searchTerm" placeholder="What your title contains?">
         <button id="searchButton">search</button>
     </div>
     <div id="cardBoxRoot"></div>
