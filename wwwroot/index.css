@@ -32,10 +32,25 @@ body {
 .row {
     display: flex;
     flex-direction: row;
-    border: 1px solid black;
+    border: 1px solid lightgray;
     padding: 0.5rem;
 }
 
 .cell {
     width: 100%;
+}
+
+.cardTitle {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 0.5rem;
+}
+.cardImage {
+    height: 15rem;
+    text-align: center;
+}
+.cardImage img {
+    height: 15rem;
 }

@@ -33,46 +33,90 @@ async function createCardBoxAndSearch(filterTitle) {
 		})
 	const cardBox = createCardBox()
 	for (cardData of response.data.contents) {
-		const card = createCard(cardData)		
+		const card = createCard(cardData)
 		cardBox.appendChild(card)
 	}
 	return cardBox
 }
 
-function createCardBox(){
+function createCardBox() {
 	const cardBox = document.createElement("div")
 	cardBox.className = "cardBox"
 	return cardBox
 }
 
-function createCard(cardData){
+function createCard(cardData) {
+	const cardEntries = Object.entries(cardData)
+	const importantFields = ["contentId", "onDemandFileName", "onDemandEncodingDescription", "onDemandDuration"]
+
 	const card = document.createElement("div")
-	for ([key, value] of Object.entries(cardData)) {
-		const row = createKeyValueRow(key, value)
-		card.appendChild(row)
-	}
+	card.appendChild(createCardTitle(cardData.title))
+	card.appendChild(createImage(cardData.imageUrl))
+
+	card.appendChild(
+		createCardMainData(cardEntries.filter(([key, _]) => importantFields.includes(key)))
+	)
+
+	console.log("provv")
+
+	const flagsFields = ["liveStatusOnAir", "liveStatusRecording", "liveMultibitrate", "trash", "hasPoster", "protectedEmbed"];
+	const dateFields = ["creationDate", "updateDate", "publishDateUTC",]
+
 	card.className = "card"
 
+	const deleteButton = createDeleteButton(cardData, card)
+	card.appendChild(deleteButton)
+
+	return card
+}
+
+function createCardTitle(titleText) {
+	const title = document.createElement("div")
+	title.className = "cardTitle"
+	title.innerText = titleText
+	return title
+}
+
+function createImage(imageUrl) {
+	const imageContainer = document.createElement("div")	
+	const image = document.createElement("img")
+	image.src = imageUrl
+	imageContainer.appendChild(image)
+	imageContainer.className = "cardImage"
+	return imageContainer
+}
+
+
+function createCardMainData(importantEntries) {
+	const mainDataParagraph = document.createElement("div")
+	mainDataParagraph.className = "mainData"
+	importantEntries.forEach(([key, value])=>{
+		const row = createKeyValueRow(key, value)
+		mainDataParagraph.appendChild(row)
+	})
+
+	return mainDataParagraph
+}
+
+function createDeleteButton(cardData, card) {
 	const deleteButton = document.createElement('button')
 	deleteButton.innerText = "delete"
 	const deleteButtonOnClick = async () => {
 		const id = cardData.contentId
 		const response = await fetch(
-			`/item/${id}/delete`, 
-			{ 
+			`/item/${id}/delete`,
+			{
 				headers: { "Authorization": "Bearer secret" },
-				method: "POST" 
-			} 
+				method: "POST"
+			}
 		).then(res => res.json())
 		if (response.id === id) card.remove()
 	}
 	deleteButton.onclick = deleteButtonOnClick
-	card.appendChild(deleteButton)
-	
-	return card
+	return deleteButton
 }
 
-function createKeyValueRow(key, value){
+function createKeyValueRow(key, value) {
 	const rowContainer = document.createElement("div")
 	const keyCell = document.createElement("div")
 	const valueCell = document.createElement("div")
