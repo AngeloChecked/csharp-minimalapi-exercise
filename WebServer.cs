@@ -27,6 +27,7 @@ class WebServer
         });
         app.MapPost("/item/{id}/delete", async ([Microsoft.AspNetCore.Mvc.FromRoute] String id, HttpResponse response) =>
         {
+            dataRepository.DeleteById(id);
             response.StatusCode = 202;
             response.ContentType = "application/json";
             await response.WriteAsync("""{ "id":""" + '"' + id + '"' + " }");

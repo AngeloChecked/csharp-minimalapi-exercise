@@ -13,22 +13,23 @@ public record DataRoot(int code, string? status, bool isSuccessStatusCode, Data?
 interface IDataRepository
 {
     public DataRoot GetData();
+    public void DeleteById(String id);
 }
 
 class DataRepository : IDataRepository
 {
     private String filePath;
-    private DataRoot data;
+    private DataRoot dataRoot;
 
     public DataRepository(String filePath)
     {
         this.filePath = filePath;
-        this.data = JObject.Parse(ReadData()).ToObject<DataRoot>()!;
+        this.dataRoot = JObject.Parse(ReadData()).ToObject<DataRoot>()!;
     }
 
     public DataRoot GetData()
     {
-        return this.data;
+        return this.dataRoot;
     }
 
     private String ReadData()
@@ -57,5 +58,11 @@ class DataRepository : IDataRepository
 
     public void DeleteById(String id)
     {
+        var filterdContets = this.dataRoot?.data?.contents?.Where(content => content.contentId != id).ToList();
+        if (filterdContets != null && this.dataRoot?.data != null ){
+            var updatedData =  this.dataRoot.data with { contents = filterdContets};
+            this.dataRoot = this.dataRoot with {data = updatedData };
+        }
     }
 }
+
