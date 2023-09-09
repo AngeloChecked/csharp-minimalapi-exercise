@@ -14,7 +14,7 @@
         "liveMultibitrate": false,
         "title": "test video 23",
         "trash": false,
-        "hasPoster": false,
+        "hasPoster": true,
         "onDemandEncodingStatus": 4,
         "gidProperty": "15fa3bc1-760d-45bb-9eeb-1508d3a9a81d",
         "contentId": "GgNXuUOo0n1d",

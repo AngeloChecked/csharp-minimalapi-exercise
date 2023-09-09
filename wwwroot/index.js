@@ -48,23 +48,21 @@ function createCardBox() {
 function createCard(cardData) {
 	const cardEntries = Object.entries(cardData)
 	const importantFields = ["contentId", "onDemandFileName", "onDemandEncodingDescription", "onDemandDuration"]
+	const flagsFields = ["liveStatusOnAir", "liveStatusRecording", "liveMultibitrate", "trash", "hasPoster", "protectedEmbed"];
 
 	const card = document.createElement("div")
+	card.className = "card"
 	card.appendChild(createCardTitle(cardData.title))
-	card.appendChild(createImage(cardData.imageUrl))
+	card.appendChild(createCardImage(cardData.imageUrl))
 
 	card.appendChild(
 		createCardMainData(cardEntries.filter(([key, _]) => importantFields.includes(key)))
 	)
+	card.appendChild(
+		createCardFlagsRow(cardEntries.filter(([key, _]) => flagsFields.includes(key)))
+	)
 
-	console.log("provv")
-
-	const flagsFields = ["liveStatusOnAir", "liveStatusRecording", "liveMultibitrate", "trash", "hasPoster", "protectedEmbed"];
-	const dateFields = ["creationDate", "updateDate", "publishDateUTC",]
-
-	card.className = "card"
-
-	const deleteButton = createDeleteButton(cardData, card)
+	const deleteButton = createCardDeleteButton(cardData, card)
 	card.appendChild(deleteButton)
 
 	return card
@@ -77,8 +75,8 @@ function createCardTitle(titleText) {
 	return title
 }
 
-function createImage(imageUrl) {
-	const imageContainer = document.createElement("div")	
+function createCardImage(imageUrl) {
+	const imageContainer = document.createElement("div")
 	const image = document.createElement("img")
 	image.src = imageUrl
 	imageContainer.appendChild(image)
@@ -86,19 +84,32 @@ function createImage(imageUrl) {
 	return imageContainer
 }
 
-
 function createCardMainData(importantEntries) {
 	const mainDataParagraph = document.createElement("div")
 	mainDataParagraph.className = "mainData"
-	importantEntries.forEach(([key, value])=>{
-		const row = createKeyValueRow(key, value)
+	importantEntries.forEach(([key, value]) => {
+		const row = createKeyValueCardRow(key, value)
 		mainDataParagraph.appendChild(row)
 	})
 
 	return mainDataParagraph
 }
 
-function createDeleteButton(cardData, card) {
+function createCardFlagsRow(flagsEntries) {
+	const cardFlags = document.createElement("div")
+	cardFlags.className = "cardFlags"
+	const row = createKeyElementCardRow("flags", cardFlags)
+	flagsEntries.forEach(([key, value]) => {
+		const flag = document.createElement("span")
+		flag.innerText = key
+		flag.className = "cardFlag"
+		value ? flag.classList.add("cardFlagChecked") : flag.classList.add("cardFlagUnchecked")
+		cardFlags.appendChild(flag)
+	})
+	return row
+}
+
+function createCardDeleteButton(cardData, card) {
 	const deleteButton = document.createElement('button')
 	deleteButton.innerText = "delete"
 	const deleteButtonOnClick = async () => {
@@ -116,7 +127,7 @@ function createDeleteButton(cardData, card) {
 	return deleteButton
 }
 
-function createKeyValueRow(key, value) {
+function createKeyValueCardRow(key, value) {
 	const rowContainer = document.createElement("div")
 	const keyCell = document.createElement("div")
 	const valueCell = document.createElement("div")
@@ -132,3 +143,18 @@ function createKeyValueRow(key, value) {
 	return rowContainer
 }
 
+function createKeyElementCardRow(key, element) {
+	const rowContainer = document.createElement("div")
+	const keyCell = document.createElement("div")
+	const valueCell = document.createElement("div")
+
+	keyCell.innerHTML = key
+	keyCell.className = "cell"
+	valueCell.className = "cell"
+	valueCell.appendChild(element)
+
+	rowContainer.appendChild(keyCell)
+	rowContainer.appendChild(valueCell)
+	rowContainer.className = "row"
+	return rowContainer
+}
