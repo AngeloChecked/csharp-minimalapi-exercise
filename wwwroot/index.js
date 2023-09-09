@@ -25,7 +25,7 @@ type Card = {
 */
 
 async function main(rootElement) {
-	const response = await fetch("/items", { headers: { "Authorization": "Bearer secret" } })
+	const response = await fetch("/item", { headers: { "Authorization": "Bearer secret" } })
 		.then(res => {
 			console.log(res)
 			return res.json()
@@ -54,9 +54,16 @@ function createCard(cardData){
 
 	const deleteButton = document.createElement('button')
 	deleteButton.innerText = "delete"
-	const deleteButtonOnClick = () => {
-
-		card.remove()
+	const deleteButtonOnClick = async () => {
+		const id = cardData.contentId
+		const response = await fetch(
+			`/item/${id}/delete`, 
+			{ 
+				headers: { "Authorization": "Bearer secret" },
+				method: "POST" 
+			} 
+		).then(res => res.json())
+		if (response.id === id) card.remove()
 	}
 	deleteButton.onclick = deleteButtonOnClick
 	card.appendChild(deleteButton)
