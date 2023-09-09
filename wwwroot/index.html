@@ -9,10 +9,23 @@
 </head>
 <script>
     window.onload = async () => {
-        await main(document.getElementById("root"))
+        const cardBoxRoot = document.getElementById("cardBoxRoot")        
+        cardBoxRoot.appendChild(await createCardBoxAndSearch())
+                
+        const searchBar = document.getElementById("searchBar")    
+        const searchButton = document.getElementById("searchButton")    
+        searchButton.onclick = async () => {
+            const title = searchBar.value
+        	  cardBoxRoot.replaceChildren();
+            cardBoxRoot.appendChild(await createCardBoxAndSearch(title))
+        }
     }
 </script>
 <body>
-    <div id="root"></div>
+    <div>
+        <textarea id="searchBar"></textarea>
+        <button id="searchButton">search</button>
+    </div>
+    <div id="cardBoxRoot"></div>
 </body>
 </html>

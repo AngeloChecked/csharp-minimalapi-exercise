@@ -24,8 +24,9 @@ type Card = {
 }
 */
 
-async function main(rootElement) {
-	const response = await fetch("/item", { headers: { "Authorization": "Bearer secret" } })
+async function createCardBoxAndSearch(filterTitle) {
+	const query = filterTitle ? `?filter=${filterTitle}` : ""
+	const response = await fetch(`/item${query}`, { headers: { "Authorization": "Bearer secret" } })
 		.then(res => {
 			console.log(res)
 			return res.json()
@@ -35,7 +36,7 @@ async function main(rootElement) {
 		const card = createCard(cardData)		
 		cardBox.appendChild(card)
 	}
-	rootElement.appendChild(cardBox)
+	return cardBox
 }
 
 function createCardBox(){
