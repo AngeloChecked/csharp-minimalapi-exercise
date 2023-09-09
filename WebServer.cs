@@ -23,7 +23,12 @@ class WebServer
         app.MapGet("/item", async context =>
         {
             context.Response.ContentType = "application/json";
-            await context.Response.WriteAsync(JObject.FromObject(dataRepository.GetData()).ToString());
+            String? query = context.Request.Query["filter"];
+            if (query != null){
+                await context.Response.WriteAsJsonAsync(dataRepository.SearchByTitle(query));
+            } else {
+                await context.Response.WriteAsJsonAsync(dataRepository.GetData());
+            }
         });
         app.MapPost("/item/{id}/delete", async ([Microsoft.AspNetCore.Mvc.FromRoute] String id, HttpResponse response) =>
         {

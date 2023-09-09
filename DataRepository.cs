@@ -14,6 +14,7 @@ interface IDataRepository
 {
     public DataRoot GetData();
     public void DeleteById(String id);
+    public DataRoot SearchByTitle(String title);
 }
 
 class DataRepository : IDataRepository
@@ -63,6 +64,12 @@ class DataRepository : IDataRepository
             var updatedData =  this.dataRoot.data with { contents = filterdContets};
             this.dataRoot = this.dataRoot with {data = updatedData };
         }
+    }
+
+    public DataRoot SearchByTitle(String title)
+    {
+            var updatedData = this.dataRoot!.data! with { contents = this.dataRoot!.data!.contents!.Where(content => content?.title?.Contains(title) ?? false).ToList() } ;
+            return this.dataRoot with {data = updatedData};
     }
 }
 

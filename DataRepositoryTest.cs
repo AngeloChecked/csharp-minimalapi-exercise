@@ -36,6 +36,18 @@ public class DataRepositoryTests
         Assert.That(dataBefore, Has.Exactly(1).Matches<Content>(content => content.contentId == id)); 
         Assert.That(dataAfter, Has.Exactly(0).Matches<Content>(content => content.contentId == id)); 
     }
+
+    [Test]
+    public void SearchByTitle()
+    {
+        var projectDir = TestUtil.RootProjectDir();
+        var dataRepository = new DataRepository(projectDir + "/data.json");
+        var title = "test video 2";
+
+        var contents = dataRepository.SearchByTitle(title)?.data?.contents;
+
+        Assert.That(contents, Has.All.Matches<Content>(content => content?.title?.Contains(title) ?? false)); 
+    }
 }
 
 public class TestUtil
