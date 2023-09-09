@@ -18,7 +18,7 @@ class WebServer
         app.UseDefaultFiles();
         app.Map("/", context => Task.Run((() => context.Response.Redirect("/index.html"))));
 
-        app.MapGet("/items", async context => {
+        app.MapGet("/item", async context => {
             context.Response.ContentType = "application/json";
             await context.Response.WriteAsync(dataRepository.GetData());
         });
