@@ -40,7 +40,7 @@ class WebServer
         });
 
         app.UseWhen(
-            context => context.Request.Path.StartsWithSegments("/items"), appBuilder =>
+            context => context.Request.Path.StartsWithSegments("/item"), appBuilder =>
             {
                 appBuilder.Use(async (context, next) =>
                 {
