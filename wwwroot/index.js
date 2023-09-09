@@ -31,8 +31,9 @@ async function main(rootElement) {
 			return res.json()
 		})
 	const cardBox = createCardBox()
-	for (card of response.data.contents) {
-		cardBox.appendChild(createCard(card))
+	for (cardData of response.data.contents) {
+		const card = createCard(cardData)		
+		cardBox.appendChild(card)
 	}
 	rootElement.appendChild(cardBox)
 }
@@ -50,6 +51,16 @@ function createCard(cardData){
 		card.appendChild(row)
 	}
 	card.className = "card"
+
+	const deleteButton = document.createElement('button')
+	deleteButton.innerText = "delete"
+	const deleteButtonOnClick = () => {
+
+		card.remove()
+	}
+	deleteButton.onclick = deleteButtonOnClick
+	card.appendChild(deleteButton)
+	
 	return card
 }
 
