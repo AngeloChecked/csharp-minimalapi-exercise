@@ -15,14 +15,14 @@
         const searchButton = document.getElementById("searchButton")    
         searchButton.onclick = async () => {
             const title = searchBar.value
-        	  cardBoxRoot.replaceChildren()
+            cardBoxRoot.replaceChildren()
             cardBoxRoot.appendChild(await createCardBoxAndSearch(title))
         }
     }
 </script>
 <body>
     <div class="searchBarContainer">
-        <input type="text" id="searchBar" class="searchTerm" placeholder="What your title contains?">
+        <input type="text" id="searchBar" placeholder="What your title contains?">
         <button id="searchButton">search</button>
     </div>
     <div id="cardBoxRoot"></div>
