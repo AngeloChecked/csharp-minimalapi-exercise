@@ -1,3 +1,5 @@
+using Newtonsoft.Json.Linq;
+
 namespace MinimalApi;
 
 class WebServer
@@ -18,9 +20,16 @@ class WebServer
         app.UseDefaultFiles();
         app.Map("/", context => Task.Run((() => context.Response.Redirect("/index.html"))));
 
-        app.MapGet("/item", async context => {
+        app.MapGet("/item", async context =>
+        {
             context.Response.ContentType = "application/json";
-            await context.Response.WriteAsync(dataRepository.GetData());
+            await context.Response.WriteAsync(JObject.FromObject(dataRepository.GetData()).ToString());
+        });
+        app.MapPost("/item/{id}/delete", async ([Microsoft.AspNetCore.Mvc.FromRoute] String id, HttpResponse response) =>
+        {
+            response.StatusCode = 202;
+            response.ContentType = "application/json";
+            await response.WriteAsync("""{ "id":""" + '"' + id + '"' + " }");
         });
 
         app.UseWhen(
