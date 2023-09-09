@@ -1,5 +1,3 @@
-using NSubstitute;
-
 namespace MinimalApi;
 
 public class DataRepositoryTests
